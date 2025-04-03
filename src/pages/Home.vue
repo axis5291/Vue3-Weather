@@ -1,12 +1,14 @@
 <template>
     <div class="wrap">
         <div class="container">
-
+           
+            <MainView />
         </div>
     </div>
 </template>
 
 <script setup>
+import MainView from '../components/MainView.vue';
 
 </script>
 
