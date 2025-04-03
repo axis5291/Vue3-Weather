@@ -41,7 +41,7 @@
                      
                         <div>
                           
-                            <img src="../assets/drop.png" alt="" />
+                            <img src="../assets/drop.png" alt="" style="width: 50px; height: 50px;"/>
                         </div>
                     </div> 
                 </div>
@@ -325,8 +325,4 @@
             }
         }
     }
-
-  
-
-
 </style>
