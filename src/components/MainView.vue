@@ -61,6 +61,8 @@
 </template>
 
 <script setup>
+    import axios from 'axios';
+
     const TemporaryData = [
         {
             title: '습도',
@@ -76,6 +78,25 @@
         },
     ];
 
+    //https://openweathermap.org/사이트에서 날씨정보를 가져오는 API
+    // 상단에 API탭을 클릭 후, Free Access로 제공하는 것을 찾아  API call로 주소를 찾고 
+    // https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}형태로 되어 있는 것을 아래에 맞게 수정해서 사용한다.
+    //지금은 current weather API를 사용하고 있음
+    const API_KEY = 'eab0698d3bb063e356afe1f39500bd90';
+    const initialLat = 37.5683;   //위도
+    const initialLon = 126.9778;   //경도   서울을 가리킴
+
+    axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${initialLat}&lon=${initialLon}&appid=${API_KEY}`)
+    .then((response)=>{
+            console.log(response);
+        }
+    ).catch(
+        (error)=>{
+            console.log(error);
+        }
+    );
+
+   
   
 </script>
 

@@ -1,14 +1,16 @@
 <template>
     <div class="wrap">
         <div class="container">
-           
-            <MainView />
+            <MainView />             
+            <SubView />
         </div>
     </div>
 </template>
 
 <script setup>
 import MainView from '../components/MainView.vue';
+import SubView from '../components/SubView.vue';
+
 
 </script>
 
@@ -20,11 +22,16 @@ import MainView from '../components/MainView.vue';
         width: 100%;
         height: 100vh;
         font-size: 16px;
-        .container{
-            width: 55%;
+
+        .container {
+            @include center;
+            gap: 200px; // MainView와 SubView 사이 간격
+            width: auto; // 줄 필요 없으면 auto
+            max-width: 1200px;
             height: 90%;
-            max-width: 1920px;
             max-height: 1354px;
-       }
-    }
+        }
+}
+
+
 </style>
