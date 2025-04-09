@@ -20,7 +20,7 @@
     font-style: normal;
 }
 
-@mixin center() {   //@mixin으로 정의하면 다른데서 @include center해서 사용가능
+@mixin center() {
     display: flex;
     align-items: center;
     justify-content: center;

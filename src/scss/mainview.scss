@@ -170,7 +170,7 @@
             width: calc(100% - 70px);
             height: 65%;
             padding: 0 30px;
-            overflow: scroll;
+            overflow: scroll;  // 스크롤바 
 
             -ms-overflow-style: none;
             scrollbar-width: none;

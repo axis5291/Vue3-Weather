@@ -59,8 +59,8 @@ onMounted(()=>{
         height: 35%;
       
         #map {
-            width: 80%;
-            height: 90%;
+            width: 80%;    // 부모 크기 기준, 보통 OK
+            height: 90%;   // 부모 높이가 0이면 결국 0
             border-radius: 10px;
         }
     }
