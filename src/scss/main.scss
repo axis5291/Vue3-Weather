@@ -21,21 +21,21 @@
 }
 
 @mixin center() {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex;              /* 자식 요소들을 Flexbox로 배치하여, 정렬이나 크기 조정이 쉽게 되도록 설정 */
+    align-items: center;        /* 자식 요소들을 세로 방향으로 중앙에 맞추기 */
+    justify-content: center;    /* 자식 요소들을 가로 방향으로 중앙에 맞추기 */
 }
 
 @mixin center-sb() {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-between; /* 아이템들 사이에 공간을 균등하게 배치 */
 }
 
 @mixin center-se() {
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-evenly; /* 아이템들 사이에 공간을 균등하게 배치 */
 }
 
 @mixin c-center() {
@@ -58,3 +58,7 @@
     justify-content: space-evenly;
     flex-direction: column;
 }
+
+
+
+

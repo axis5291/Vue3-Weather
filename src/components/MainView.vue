@@ -37,16 +37,16 @@
                 <p>이번주 날씨보기</p>
             </div>
             <div class="timelyWeatherBox">
-                <div class="timelyWeather" v-for="(forecast, index) in threeHourForecastData" :key="index">
+                <div class="timelyWeather" v-for="(forecastData, index) in threeHourForecastData" :key="index">
                     <div class="icon">
-                        <img  :src="`/images/${forecast.icon}.png`" alt="weather icon" />   <!-- public 폴더안에 넣으면 바로 이렇게 접근할 수 있다. -->
+                        <img  :src="`/images/${forecastData.icon}.png`" alt="weather icon" />   <!-- public 폴더안에 넣으면 바로 이렇게 접근할 수 있다. -->
                     </div>
                     <div class="data">
-                        <p class="time">{{ forecast.time }}</p>
-                        <p class="currentDegree"> {{forecast.temp}} &deg;</p>
+                        <p class="time">{{ forecastData.time }}</p>
+                        <p class="currentDegree"> {{forecastData.temp}} &deg;</p>
                         <div>
                           <img src="/images/drop.png" alt="" />
-                          <p class="fall"> 15% </p>
+                          <p class="fall"> {{forecastData.humidity}}% </p>
                         </div>
                     </div> 
                 </div>
@@ -75,7 +75,7 @@
 
     const currentWeatherData=reactive({
                              currentTemp: { title: '현재온도', value: '' },
-                            feels_like: { title: '체감온도', value: '' },
+                             feels_like: { title: '체감온도', value: '' },
                              humidity: { title: '습도', value: '' },
                              wind_speed: { title: '풍속', value: '' },
     },);       
@@ -93,17 +93,17 @@
     //현재 날씨 정보를 가져오는 API
     axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${initialLat}&lon=${initialLon}&appid=${API_KEY}`)
     .then((response)=>{
-            console.log('현재날씨 정보',response.data);  //**API에서 받아온 데이터을 콘솔에 찍어보고 넘어온 데이터를 살펴보면서 아래에 필요한 데이터를 사용한다.
-       
-            currentData.cityName.value = response.data.name;  //도시명
-            currentData.icon.value= response.data.weather[0].icon;  //아이콘
-            currentWeatherData.currentTemp.value= (response.data.main.temp - 273.15).toFixed(1); // 섭씨 변환
-            currentWeatherData.humidity.value = response.data.main.humidity + '%';//습도
-            currentWeatherData.feels_like.value = (response.data.main.feels_like - 273.15).toFixed(1) + '°C';  //체감온도
-            currentWeatherData.wind_speed.value = response.data.wind.speed + 'm/s';  //풍속
+            console.log('MainView에서 현재날씨 정보:',response.data);  //**API에서 받아온 데이터을 콘솔에 찍어보고 넘어온 데이터를 살펴보면서 아래에 필요한 데이터를 사용한다.
+            const weatherData=response.data;
+
+            currentData.cityName.value = weatherData.name;  //도시명
+            currentData.icon.value= weatherData.weather[0].icon;  //아이콘
+            currentWeatherData.currentTemp.value= (weatherData.main.temp - 273.15).toFixed(1); // 섭씨 변환
+            currentWeatherData.humidity.value = weatherData.main.humidity + '%';//습도
+            currentWeatherData.feels_like.value = (weatherData.main.feels_like - 273.15).toFixed(1) + '°C';  //체감온도
+            currentWeatherData.wind_speed.value = weatherData.wind.speed + 'm/s';  //풍속
            }
-    ).catch(
-        (error)=>{
+    ).catch((error)=>{
             console.log(error);
         }
     );
@@ -113,21 +113,22 @@
        
     axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${initialLat}&lon=${initialLon}&appid=${API_KEY}`)
     .then((response) => {
-    console.log('3시간 일기얘보 전체정보:', response.data);
+        console.log('3시간 일기얘보 전체정보:', response.data);
+        const weatherData=response.data;
 
-    for(let i=0; i<response.data.list.length; i++){
-        const time = dayjs(response.data.list[i].dt_txt).format('MM/DD HH:mm');  
-        const temp = (response.data.list[i].main.temp - 273.15).toFixed(1);
-        const icon = response.data.list[i].weather[0].icon;
-        threeHourForecastData.value.push({time, temp, icon});
-    }
+        for(let i=0; i<weatherData.list.length; i++){
+            let time = dayjs(weatherData.list[i].dt_txt).format('HH:mm');  
+            let temp = (weatherData.list[i].main.temp - 273.15).toFixed(1);
+            let icon = weatherData.list[i].weather[0].icon;
+            let humidity = weatherData.list[i].main.humidity;
+            threeHourForecastData.value.push({time, temp, icon, humidity});
+        }
 
-    console.log('3시간 얘보정보(시간, 온도, 아이콘):', threeHourForecastData.value);
+        console.log('3시간 얘보정보(시간, 온도, 아이콘, 습도):', threeHourForecastData.value);
 
-  })
-  .catch((error) => {
-    console.error('에러 발생:', error);
-  });
+    }).catch((error) => {
+        console.error('에러 발생:', error);
+    });
   
 </script>
 

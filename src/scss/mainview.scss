@@ -1,275 +1,290 @@
 .leftContainer {
-    width: 324px; // 전체 박스의 너비를 고정
-    min-width: 324px; // 최소 너비도 고정 (축소 방지)
-    height: 700px; // 전체 박스의 높이
-    border-radius: 50px; // 모서리를 둥글게
-    background: linear-gradient(#16455f, #0e1239); // 위에서 아래로 그라데이션
-    box-shadow: 5px 5px 10px gray; // 회색 그림자 효과
-  
-    #cityNameBox {
-      width: 100%; // 상위 요소에 맞춤
-      height: 10%; // 전체 높이의 10% 차지
-  
-      .cityName {
-        @include c-center; // 세로, 가로 중앙 정렬 (mixin)
-        width: 100%;
-        height: 100%;
-  
-        p {
-          color: white; // 글자색 흰색
-          font-family: 'Poppins', sans-serif; // 폰트 설정
-          text-align: center; // 텍스트 가운데 정렬
-          line-height: 2.5; // 줄 간격 조정
-  
-          &:first-child {
-            width: 241px;
-            height: 33px;
-            font-size: 1.35rem; // 큰 텍스트 (도시 이름)
-          }
-  
-          &:last-child {
-            width: 160px;
-            height: 19px;
-            font-size: 0.9rem;
-            font-weight: 100; // 얇은 글씨 (날짜 등)
-          }
-        }
-      }
-    }
-  
-    #contentsBox {
+  width: 324px; // 전체 왼쪽 날씨 박스의 너비 고정
+  min-width: 324px; // 브라우저가 줄어들어도 최소 너비 보장
+  height: 700px; // 전체 높이 설정
+  border-radius: 50px; // 박스 모서리를 둥글게 (타원형 느낌)
+  background: linear-gradient(#16455f, #0e1239); // 위→아래 그라데이션 배경
+  box-shadow: 5px 5px 10px gray; // 그림자 효과로 입체감 추가
+
+  // 도시명과 날짜 표시 영역
+  #cityNameBox {
+    width: 100%;
+    height: 10%; // 전체 높이의 10%
+
+    .cityName {
+      @include c-center; // 세로·가로 모두 가운데 정렬
       width: 100%;
-      height: 62.5%;
-  
-      .buttonBox {
-        @include center; // 중앙 정렬
-        width: 100%;
-        height: 20%;
-  
-        .buttonBackground {
-          width: 224px;
-          height: 35px;
-          background-color: #052137; // 어두운 배경색
-          border-radius: 10px; // 둥근 테두리
-          display: flex; // 버튼 2개 나란히 배치
-  
-          button {
-            width: 112px;
-            height: 35px;
-            border: none;
-            border-radius: 7.5px;
-            outline: none;
-            cursor: pointer; // 마우스 올리면 손 모양
-  
-            &.forecast {
-              background-color: #0889ff;
-              color: white; // 선택된 버튼 스타일
-            }
-  
-            &.airquality {
-              background: transparent; // 투명 배경
-              color: #467599; // 선택되지 않은 버튼
-            }
-          }
-        }
-      }
-  
-      .weatherBox {
-        width: 100%;
-        height: 80%;
-  
-        .weatherDegree {
-          @include center;
-          width: 100%;
-          height: 15%;
-  
-          p {
-            font-size: 3.5rem; // 큰 온도 글자
-            font-weight: 500;
-            font-family: 'Be Vietnam Pro', sans-serif;
-            color: white;
-          }
-        }
-  
-        .weatherIcon {
-          @include center;
-          width: 100%;
-          height: 60%;
-  
-          img {
-            height: 160px; // 날씨 아이콘 크기
-          }
-        }
-  
-        .weatherData {
-          display: flex;
-          width: 100%;
-          height: 25%;
-          justify-content: space-around; // 3등분 정렬
-          align-items: center; // 수직 정렬
-  
-          .detailData {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            width: 33.33%;
-  
-            &:nth-child(1) {
-              margin-left: 10px;
-            }
-  
-            &:nth-child(2) {
-              margin-left: -10px;
-            }
-  
-            &:nth-child(3) {
-              margin-right: 10px;
-            }
-  
-            p {
-              margin: 0;
-              line-height: 1.2;
-  
-              &:first-child {
-                font-size: 0.85rem;
-                font-weight: 300;
-                font-family: 'Noto Sans KR', sans-serif;
-                color: #799ed0; // 설명 텍스트
-              }
-  
-              &:last-child {
-                font-size: 1rem;
-                font-weight: 400;
-                font-family: 'Poppins', sans-serif;
-                color: white; // 값 텍스트
-              }
-            }
-          }
-        }
-      }
-    }
-  
-    #todayWeather {
-      width: 100%;
-      height: 17.5%;
-  
-      .textBox {
-        @include center-sb; // space-between 중앙 정렬
-        width: calc(100% - 70px);
-        height: 35%;
-        padding: 0 35px;
-        font-family: 'Noto Sans KR', sans-serif;
-  
-        p {
-          font-size: 0.8rem;
-          font-weight: 400;
-          color: white;
-          text-align: center;
-  
-          &:last-child {
-            color: #0085ff; // 파란색 강조 텍스트 (더보기 등)
-            cursor: pointer;
-            margin-bottom: 2px;
-          }
-        }
-      }
-  
-      .timelyWeatherBox {
-        display: flex;
-        align-items: center;
-        width: calc(100% - 70px);
-        height: 65%;
-        padding: 0 30px;
-        overflow-x: scroll; // 가로 스크롤
-  
-        -ms-overflow-style: none; // IE용
-        scrollbar-width: none; // Firefox용
-  
-        &::-webkit-scrollbar {
-          display: none; // 크롬 스크롤 숨기기
-        }
-  
-        .timelyWeather {
-          display: flex;
-          width: 126px;
-          min-width: 126px;
-          height: 70px;
-          background-color: #0989ff;
-          border-radius: 20px;
-          margin-left: 15px;
-  
-          &:first-child {
-            margin-left: 0; // 첫 요소는 좌측 여백 없음
-          }
-  
-          .icon {
-            @include center;
-            width: 45%;
-            height: 100%;
-  
-            img {
-              width: 100%; // 아이콘 꽉 채우기
-            }
-          }
-  
-          .data {
-            @include c-center-se;
-            width: 55%;
-            height: 100%;
-  
-            p {
-              color: whitesmoke;
-              font-family: 'Poppins', sans-serif;
-              text-align: center;
-  
-              &.time {
-                font-size: 0.8rem;
-                font-weight: 200;
-                margin-top: 7.5px; // 위 여백
-              }
-  
-              &.currentDegree {
-                font-size: 1.2rem;
-                margin-top: 7.5px;
-              }
-            }
-  
-            div {
-              @include center;
-              width: 100%;
-              height: 33.33%;
-  
-              img {
-                height: 55%;
-              }
-  
-              .fall {
-                font-size: 0.9rem;
-                margin-top: 1.5px; // 살짝 띄우기
-              }
-            }
-          }
-        }
-      }
-    }
-  
-    nav {
-      @include center-sb;
-      width: calc(100% - 100px);
-      height: 10%;
-      padding: 0 50px;
-  
-      i {
+      height: 100%;
+
+      p {
         color: white;
-        font-size: 1.15rem;
-        cursor: pointer;
-        transition: color 0.2s ease; // hover 효과 부드럽게
-  
-        &:hover {
-          color: #799ed0; // 마우스 올릴 때 색상 변경
+        font-family: 'Poppins', sans-serif;
+        text-align: center;
+        line-height: 2.5;
+
+        &:first-child {
+          width: 241px;
+          height: 33px;
+          font-size: 1.35rem; // 도시 이름
+        }
+
+        &:last-child {
+          width: 160px;
+          height: 19px;
+          font-size: 0.9rem; // 날짜/시간
+          font-weight: 100;
         }
       }
     }
   }
-  
+
+  // 날씨 정보 전체 영역
+  #contentsBox {
+    width: 100%;
+    height: 62.5%;
+
+    // 버튼 (Forecast / AirQuality) 영역
+    .buttonBox {
+      @include center;
+      width: 100%;
+      height: 20%;
+
+      .buttonBackground {
+        width: 224px;
+        height: 35px;
+        background-color: #052137;
+        border-radius: 10px;
+        display: flex;
+
+        button {
+          width: 112px;
+          height: 35px;
+          border: none;
+          border-radius: 7.5px;
+          outline: none;
+          cursor: pointer;
+
+          &.forecast {
+            background-color: #0889ff; // 파란색 버튼 (선택됨)
+            color: white;
+          }
+
+          &.airquality {
+            background: transparent; // 투명 배경
+            color: #467599; // 비활성 버튼
+          }
+        }
+      }
+    }
+
+    // 메인 날씨 정보 박스
+    .weatherBox {
+      width: 100%;
+      height: 80%;
+
+      .weatherDegree {
+        @include center;
+        width: 100%;
+        height: 15%;
+
+        p {
+          font-size: 3.5rem; // 큰 온도 숫자
+          font-weight: 500;
+          font-family: 'Be Vietnam Pro', sans-serif;
+          color: white;
+        }
+      }
+
+      .weatherIcon {
+        @include center;
+        width: 100%;
+        height: 60%;
+
+        img {
+          height: 160px; // 날씨 아이콘 이미지 크기
+        }
+      }
+
+      .weatherData {
+        display: flex;
+        width: 100%;
+        height: 25%;
+        justify-content: space-around;
+        align-items: center;
+
+        .detailData {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 4px;
+          width: 33.33%; // 3등분
+
+          &:nth-child(1) {
+            margin-left: 10px;
+          }
+
+          &:nth-child(2) {
+            margin-left: -10px; // 간격 조절
+          }
+
+          &:nth-child(3) {
+            margin-right: 10px;
+          }
+
+          p {
+            margin: 0;
+            line-height: 1.2;
+
+            &:first-child {
+              font-size: 0.85rem;
+              font-weight: 300;
+              font-family: 'Noto Sans KR', sans-serif;
+              color: #799ed0; // 항목 이름 (ex. 체감온도)
+            }
+
+            &:last-child {
+              font-size: 1rem;
+              font-weight: 400;
+              font-family: 'Poppins', sans-serif;
+              color: white; // 항목 값 (ex. 15°C)
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // 오늘 시간대별 날씨 정보
+  #todayWeather {
+    width: 100%;
+    height: 17.5%;
+
+    // 제목과 '이번 주 날씨 보기' 텍스트
+    .textBox {
+      @include center-sb;
+      width: calc(100% - 70px);
+      height: 35%;
+      padding: 0 35px;
+      font-family: 'Noto Sans KR', sans-serif;
+
+      p {
+        font-size: 0.8rem;
+        font-weight: 400;
+        color: white;
+        text-align: center;
+
+        &:last-child {
+          color: #0085ff;
+          cursor: pointer;
+          margin-bottom: 2px;
+        }
+      }
+    }
+
+    // 시간별 날씨 카드 리스트
+    .timelyWeatherBox {
+      display: flex;
+      align-items: center;
+      width: calc(100% - 70px);
+      height: 65%;
+      padding: 0 30px;
+      overflow-x: scroll; // 가로 스크롤 허용
+
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+
+      &::-webkit-scrollbar {
+        display: none; // 크롬 스크롤바 숨기기
+      }
+
+      .timelyWeather {
+        display: flex;
+        width: 126px;
+        min-width: 126px;
+        height: 90px;
+        background-color: #0989ff;
+        border-radius: 20px;
+        margin-left: 15px;
+
+        &:first-child {
+          margin-left: 0;
+        }
+
+        // 아이콘 영역 (왼쪽)
+        .icon {
+          @include center;
+          width: 45%;
+          height: 100%;
+
+          img {
+            width: 100%; // 아이콘 꽉 채우기
+          }
+        }
+
+        // 데이터 영역 (오른쪽)
+        .data {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-evenly;
+          align-items: center;
+          width: 55%;
+          height: 100%;
+          gap: 4px;
+
+          p {
+            color: whitesmoke;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            margin: 0;
+
+            &.time {
+              font-size: 0.8rem;
+              font-weight: 200; // 시간
+            }
+
+            &.currentDegree {
+              font-size: 1.2rem; // 온도
+            }
+          }
+
+          // 습도 + 물방울 아이콘
+          div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            width: 100%;
+
+            img {
+              height: 16px; // 물방울 아이콘
+            }
+
+            .fall {
+              font-size: 0.85rem;
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // 하단 네비게이션 아이콘
+  nav {
+    @include center-sb;
+    width: calc(100% - 100px);
+    height: 10%;
+    padding: 0 50px;
+
+    i {
+      color: white;
+      font-size: 1.15rem;
+      cursor: pointer;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: #799ed0;
+      }
+    }
+  }
+}
