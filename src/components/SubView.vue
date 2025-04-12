@@ -115,7 +115,8 @@ const fetchOpenWeather = async () => {
 };
 
 onMounted(() => {
-    fetchOpenWeather();
+    fetchOpenWeather(); //외부의 api를 호출하는 함수
+    //"외부 API에서 데이터를 불러와서 화면에 보여줘야 한다면, 컴포넌트가 화면에 완전히 마운트된 직후 (onMounted)에 호출하는 게 가장 안전하다."
 });
 
 
