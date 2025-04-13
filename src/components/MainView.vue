@@ -92,6 +92,8 @@
     const initialLon = 126.9778;  //경도(Longitude:ˈlɒŋ.ɡɪ.tjuːd)   서울을 가리킴
 
     const currentTime = dayjs().format('YYYY. MM. DD. ddd. hh:mm')
+    const threeHourForecastData=ref([]);   
+    //***  실수한 상황:onMounted()안에서 threeHourForecastData를를 정의했음.. 템플릿에서 쓰기 위해서는 메서드 밖에서 선언하는 것이 옳다.*/
    
 
     onMounted(()=>{
@@ -114,7 +116,7 @@
         );
 
     //3시간 간격 예보정보를 가져오는 API
-        const threeHourForecastData=ref([]);
+       
         
         axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${initialLat}&lon=${initialLon}&appid=${API_KEY}`)
         .then((response) => {
