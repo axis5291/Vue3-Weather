@@ -1,35 +1,41 @@
-// stores/openWeatherApi.js
+//컴포지션 방식에서  pinia는 아래와 같은 구조로 사용하면 된다.
+//1.데이터를 저장하는 변수 선언 2.데이터를 변경하는 함수 선언 3. 비동기 API 호출 함수 선언  4.1,2,3을 묶어서 export
+
+
 import { defineStore } from 'pinia';
 import { ref, reactive } from 'vue';
 import axios from 'axios';
 import dayjs from 'dayjs';
 
 
-export const useOpenWeatherApiStore = defineStore('openWeatherApi', () => {
-  // state 정의
+//컴포넌트에서  import { useOpenWeatherApiStore } from '../store/openWeatherApi';로 쓰임
+// defineStore('openWeatherApi')의 문자열은 Pinia 내부에서 이 스토어를 구분하는 고유 ID, 같은 방식으로 새로운 스토어를 만들 때는 이 ID가 중복되지 않도록 ('openWeatherApi2' 등) 구분해서 작성해야 함
+export const useOpenWeatherApiStore = defineStore('openWeatherApi', () => {  
+  
+  //1.데이터를 저장하는 변수 선언:reactive()를 사용하여 객체로 담는다.
    const position = reactive({
     lat: 37.5683,
     lon: 126.9778,
   });
 
-    const mainViewCurrentData =reactive({
+    const mainViewCurrentData =reactive({       //reactive({}) 반응형 객체를 만들기 위한 함수. 괄호 안에는 객체 하나만 들어감. ->속성(cithName, icon)에다가 다시 객체{}할당
         cityName: { title: '도시명', value: '' },
         icon: { title: '아이콘', value: '' },
-    },);
+    });
 
     const mainViewCurrentWeatherData=reactive({
         currentTemp: { title: '현재온도', value: '' },
         feels_like: { title: '체감온도', value: '' },
         humidity: { title: '습도', value: '' },
     
-    },);      
+    });      
 
     const subViewWeatherData=reactive({     //SubView에 사용
       sunrise:{ name:"일출시간", value: '' },
       sunset: { name:"일몰시간", value: ''},
       visibility:{ name:"가시거리", value: ''},
     
-    },);
+    });
 
     const subViewFeelngTemp=ref('');  //체감온도
 
@@ -37,7 +43,7 @@ export const useOpenWeatherApiStore = defineStore('openWeatherApi', () => {
 
     const images = ref([]);
 
-    // actions 정의
+    // 2. 데이터를 변경하는 함수 선언
     function setLatLon(payload) {   // 위도 경도 설정
       position.lat = payload.lat;  
       position.lon = payload.lon;
@@ -83,7 +89,7 @@ export const useOpenWeatherApiStore = defineStore('openWeatherApi', () => {
       images.value = icon;
     }
       
-  // 비동기 API 호출
+  // 3. 비동기 API 호출 함수 선언
   async function fetchOpenWeatherApi() {
     const API_KEY = '284bfdeb630520653864189833ba7c68';
 
@@ -101,7 +107,9 @@ export const useOpenWeatherApiStore = defineStore('openWeatherApi', () => {
          //3시간 간격 예보정보를 가져오는 API
         const resThreeHour = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${position.lat}&lon=${position.lon}&appid=${API_KEY}`       );
   
-        mainViewThreeHourForecastData.value = resThreeHour.data.list.map((item) => {
+         //list라는 배열에서 하나하나 꺼내서 item이라는 이름으로 받고, map()을 통해 icon, time, temp, humidity 같은 속성으로 이루어진 새로운 배열을 만든다
+         //return은 왜 필요?	map()은 return된 값을 모아서 새 배열을 만들기 때문
+         mainViewThreeHourForecastData.value = resThreeHour.data.list.map((item) => {
             return {
               icon: item.weather[0].icon,
               time: dayjs(item.dt_txt).format('HH:mm'),
@@ -113,7 +121,8 @@ export const useOpenWeatherApiStore = defineStore('openWeatherApi', () => {
            console.log(error);
         }  //catch
       } //fetchOpenWeatherApi
-     
+
+  // 4.1,2,3을 묶어서 export
   return {
     position,
     mainViewCurrentData,

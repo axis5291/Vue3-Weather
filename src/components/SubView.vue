@@ -16,7 +16,7 @@
             </div>
             <div class="weatherBox">
                 <div class="airCondition">
-                    <p>체감:{{ subviewFeelingTemp }}</p>
+                    <p>체감:{{ subViewFeelingTemp }}</p>
                 </div>
                 <div class="detail">
                     <div class="title">
@@ -48,10 +48,10 @@
 </template>
 
 <script setup>
-    import { onMounted, ref, computed } from 'vue';
+    import { onMounted, computed } from 'vue';
     import Map from '../components/Map.vue';
     import dayjs from 'dayjs';
-    import { useOpenWeatherApiStore } from '../store/openWeatherApi';
+    import { useOpenWeatherApiStore } from '../store/openWeatherApi';  //openWeatherApi.js에서 export한 useOpenWeatherApiStore명을 일치시켜야 한다.
 
     dayjs.locale('ko'); // 한국어로 설정
     const store = useOpenWeatherApiStore(); // Pinia store 불러오기
@@ -63,11 +63,11 @@
 
     const suvViewCurrentData = computed(() => ({
                                 cityName: store.mainViewCurrentData.cityName,
-                                icon: store.mainViewCurrentData.icon }));
+                                icon: store.mainViewCurrentData.icon }));  //넘어온 객체를 다시 객체로 담는다..
 
-    const subViewWeatherData = computed(() => Object.values(store.subViewWeatherData));
+    const subViewWeatherData = computed(() => Object.values(store.subViewWeatherData));  //넘어온 객체에 값만 뽑아서 배열로 만든다.
 
-    const subviewFeelingTemp = computed(() => store.subViewFeelngTemp);
+    const subViewFeelingTemp = computed(() => store.subViewFeelngTemp);
 
 
 
