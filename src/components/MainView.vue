@@ -16,7 +16,7 @@
             </div>
             <div class="weatherBox">
                 <div class="weatherDegree">
-                    <p>{{currentWeatherData.currentTemp}}&deg;</p>
+                    <p>{{currentTemp}}&deg;</p>
                 </div>
                 <div class="weatherIcon">
                     <img  :src="`/images/${currentData.icon}.png`" alt="weather icon" />
@@ -62,7 +62,7 @@
 </template>
 
 <script setup>
-    import { onMounted, ref, computed } from 'vue';
+    import { onMounted, ref, computed, toRaw } from 'vue';
     import dayjs from 'dayjs';
     import 'dayjs/locale/ko';
     import { useOpenWeatherApiStore } from '../store/openWeatherApi';
@@ -80,8 +80,8 @@
                                 cityName: store.mainViewCurrentData.cityName,
                                 icon: store.mainViewCurrentData.icon }));
 
-    const currentWeatherData =  computed(() => store.mainViewCurrentWeatherData);
-
+    const currentWeatherData = computed(() => store.mainViewCurrentWeatherData);
+    const currentTemp = computed(() => store.mainViewCurrentWeatherData.currentTemp.value);
     const threeHourForecastData = computed(() => store.mainViewThreeHourForecastData);
 
        

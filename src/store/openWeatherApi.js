@@ -24,9 +24,9 @@ export const useOpenWeatherApiStore = defineStore('openWeatherApi', () => {
     });
 
     const mainViewCurrentWeatherData=reactive({
-        currentTemp: { title: '현재온도', value: '' },
-        feels_like: { title: '체감온도', value: '' },
-        humidity: { title: '습도', value: '' },
+        currentTemp: { title: '현재온도', value: '123' },
+        feels_like: { title: '체감온도', value: '3' },
+        humidity: { title: '습도', value: '2' },
     
     });      
 
@@ -56,14 +56,10 @@ export const useOpenWeatherApiStore = defineStore('openWeatherApi', () => {
     }
 
     function setMainViewCurrentWeatherData(payload) {  
-      if (payload && payload.temp !== undefined) {
-        mainViewCurrentWeatherData.currentTemp = (payload.temp - 273.15).toFixed(1); // 섭씨 변환
-        mainViewCurrentWeatherData.feels_like = (payload.feels_like - 273.15).toFixed(1) + '°C'; // 체감온도
-        mainViewCurrentWeatherData.humidity = payload.humidity + '%'; // 습도
-      } else {
-        console.error('Invalid weather data:', payload);
-      }
-    }
+        mainViewCurrentWeatherData.currentTemp.value = (payload.temp - 273.15).toFixed(1); // 섭씨 변환
+        mainViewCurrentWeatherData.feels_like.value = (payload.feels_like - 273.15).toFixed(1) + '°C'; // 체감온도
+        mainViewCurrentWeatherData.humidity.value = payload.humidity + '%'; // 습도
+     }
 
     function setSubViewWeatherData(payload) {  //SubView에 설정
       subViewWeatherData.sunrise.value = dayjs.unix(payload.sys.sunrise).format('HH:mm');
@@ -96,7 +92,7 @@ export const useOpenWeatherApiStore = defineStore('openWeatherApi', () => {
     try {
         //현재 날씨 정보를 가져오는 API
         const resCurrent= await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${position.lat}&lon=${position.lon}&appid=${API_KEY}`);
-                                         
+        console.log("resCurrent", resCurrent);                                
         setLatLon(resCurrent.data.coord);
         setMainViewCurrentData(resCurrent.data);
         setMainViewCurrentWeatherData(resCurrent.data.main);
