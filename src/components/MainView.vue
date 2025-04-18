@@ -33,7 +33,7 @@
 
         <div id="todayWeather">
             <div class="textBox">
-                <p>시간대별 날씨정보</p>
+                <p>3시간 간격 날씨정보</p>
                 <p>이번주 날씨보기</p>
             </div>
             <div class="timelyWeatherBox">
@@ -62,10 +62,12 @@
 </template>
 
 <script setup>
-    import { onMounted, ref, computed, toRaw } from 'vue';
+    import { onMounted, ref, computed} from 'vue';
     import dayjs from 'dayjs';
     import 'dayjs/locale/ko';
     import { useOpenWeatherApiStore } from '../store/openWeatherApi';
+    import MapPositions from '../assets/map-positions.json'; // ❶ 한글 도시명 데이터 가져오기
+    
 
     dayjs.locale('ko'); // 한국어로 설정
 
@@ -76,15 +78,27 @@
          await store.fetchOpenWeatherApi(); // Pinia action 호출
     });
 
+    // ❷ 영어 도시명을 한글로 변환해주는 computed
+    const cityNameKo = computed(() => {
+    const cityNameEn = store.mainViewCurrentData.cityName;
+   
+    const found = MapPositions.find(pos => pos.cityName === cityNameEn); // MapPositions 배열에서 cityName이 cityNameEn과 같은 첫 번째 객체(pos)를 찾음, found에는 일치하는 객체가 있으면 해당 객체가, 없으면 undefined가 들어감
+    return found ? found.label : cityNameEn;   // 일치하는 객체가 있다면 해당 객체의 label 값을 반환하고, 없다면 영어 이름 그대로 반환
+});
+
     const currentData = computed(() => ({
-                                cityName: store.mainViewCurrentData.cityName,
+                                cityName: cityNameKo,
                                 icon: store.mainViewCurrentData.icon }));
 
     const currentWeatherData = computed(() => store.mainViewCurrentWeatherData);
     const currentTemp = computed(() => store.mainViewCurrentWeatherData.currentTemp.value);
-    const threeHourForecastData = computed(() => store.mainViewThreeHourForecastData);
+    const threeHourForecastData = computed(() => store.mainViewThreeHourForecastData)
 
-       
+  
+    
+//computed는 계산된 값을 자동으로 반환해주는 Vue의 반응형 기능이야.  기본 목적은 다음 두 가지야
+// 1.의존하는 값이 변경되면 자동으로 다시 계산
+// 2.캐싱(caching): 값이 변하지 않으면 다시 계산하지 않음 → 성능 최적화!
   
   
 </script>

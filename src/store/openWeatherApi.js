@@ -11,10 +11,10 @@ import dayjs from 'dayjs';
 export const useOpenWeatherApiStore = defineStore('openWeatherApi', () => {  
   
   //1.데이터를 저장하는 변수 선언:reactive()를 사용하여 객체로 담는다.
-    const position = reactive({
-    lat: 37.5683,
-    lon: 126.9778,
-    });
+    const position = reactive({  
+      lat: 37.2751,
+      lon: 127.0796   //영덕동963을 기본으로 설정
+    });  //위도 경도 설정
 
     const mainViewCurrentData =reactive({       //reactive({}) 반응형 객체를 만들기 위한 함수. 괄호 안에는 객체 하나만 들어감. ->속성(cithName, icon)에다가 다시 객체{}할당
         cityName: { title: '도시명', value: '' },
@@ -40,9 +40,10 @@ export const useOpenWeatherApiStore = defineStore('openWeatherApi', () => {
     const images = ref([]);
 
     // 2. 데이터를 변경하는 함수 선언
-    function setLatLon(payload) {   // 위도 경도 설정
-      position.lat = payload.lat;  
-      position.lon = payload.lon;
+    function setPosition(payload) {   // 위도 경도 설정
+      position.lat = parseFloat(payload.Ma);
+      position.lon = parseFloat(payload.La);
+      console.log('openWeatherApi로 넘어온 포지션:',position)
     }
   
     function setMainViewCurrentData(payload) {
@@ -86,8 +87,8 @@ export const useOpenWeatherApiStore = defineStore('openWeatherApi', () => {
     try {
         //현재 날씨 정보를 가져오는 API
         const resCurrent= await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${position.lat}&lon=${position.lon}&appid=${API_KEY}`);
-        console.log("resCurrent", resCurrent);                                
-        setLatLon(resCurrent.data.coord);    //***resCurrent.data로 접근해야 실제 원하는 날씨관련 데이터만 가져올수 있다..resCurrent는 데이터 말고도 header같은 부가적 정보도 있음 */
+        console.log("메인뷰에 사용할 데이터 resCurrent:", resCurrent);
+        //setPosition(position);    //***resCurrent.data로 접근해야 실제 원하는 날씨관련 데이터만 가져올수 있다..resCurrent는 데이터 말고도 header같은 부가적 정보도 있음 */
         setMainViewCurrentData(resCurrent.data);
         setMainViewCurrentWeatherData(resCurrent.data.main);
         setSubViewWeatherData(resCurrent.data);
@@ -95,14 +96,15 @@ export const useOpenWeatherApiStore = defineStore('openWeatherApi', () => {
         setImagePath(resCurrent.data.weather[0].icon);
       
          //3시간 간격 예보정보를 가져오는 API
-        const resThreeHour = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${position.lat}&lon=${position.lon}&appid=${API_KEY}`       );
-  
+        const resThreeHour = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${position.lat}&lon=${position.lon}&appid=${API_KEY}`);
+        console.log("Forecast 요청 URL:", resThreeHour);
+        //https://api.openweathermap.org/data/2.5/forecast?lat=37.5603&lon=126.9778&appid=284bfdeb630520653864189833ba7c68
          //list라는 배열에서 하나하나 꺼내서 item이라는 이름으로 받고, map()을 통해 icon, time, temp, humidity 같은 속성으로 이루어진 새로운 배열을 만든다
          //return은 왜 필요?	map()은 return된 값을 모아서 새 배열을 만들기 때문
          mainViewThreeHourForecastData.value = resThreeHour.data.list.map((item) => {
             return {
               icon: item.weather[0].icon,
-              time: dayjs(item.dt_txt).format('HH:mm'),
+              time: dayjs(item.dt_txt).format('MMDD(ddd)HH'),
               temp: (item.main.temp - 273.15).toFixed(1),
               humidity: item.main.humidity,
             };
@@ -122,7 +124,7 @@ export const useOpenWeatherApiStore = defineStore('openWeatherApi', () => {
     mainViewThreeHourForecastData,
     images,
 
-    setLatLon,
+    setPosition,
     setMainViewCurrentData,
     setMainViewCurrentWeatherData,
     setSubViewWeatherData,
